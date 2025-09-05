@@ -36,6 +36,7 @@
 
 - Signals API: `signal()`, `computed()`, `linkedSignal()`, `effect()`, `untrack()`, `input()`, `model()`
 - Resource API: `resource()`, `httpResource()`
+- Control Flow: @if @for @switch
 
 ---
 
