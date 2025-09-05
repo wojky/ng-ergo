@@ -1,9 +1,10 @@
 import { Component, signal, computed, linkedSignal, untracked, effect } from '@angular/core';
 import { TestComponent } from './test.component';
+import { CharacterList } from './character-list/character-list';
 
 @Component({
   selector: 'app-root',
-  imports: [TestComponent],
+  imports: [TestComponent, CharacterList],
   template: `
     <!-- <h1>Welcome to {{ title() }}!</h1> -->
     <!-- <h2>uppercased: {{ titleUppercased() }}</h2> -->
@@ -16,6 +17,8 @@ import { TestComponent } from './test.component';
 
     <button (click)="count.set(count() + 1)">Increment Count</button>
     <app-test />
+
+    <app-character-list />
   `,
   styles: [],
 })
