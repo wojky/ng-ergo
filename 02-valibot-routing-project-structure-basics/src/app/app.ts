@@ -6,9 +6,9 @@ import { SignalsExample } from './signals-example';
 
 @Component({
   selector: 'app-root',
-  imports: [SignalsExample, CharacterList, LocationList, EpisodeList],
+  imports: [CharacterList, LocationList, EpisodeList],
   template: `
-    <app-signals-example />
+    <!-- <app-signals-example /> -->
 
     <app-character-list />
     <app-location-list />

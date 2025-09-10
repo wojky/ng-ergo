@@ -1,20 +1,7 @@
 import { httpResource } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
-
-export type ApiResponse = {
-  info: {
-    count: number;
-    next: string | null;
-    pages: number;
-    prev: string | null;
-  };
-  results: Character[];
-};
-
-export type Character = {
-  id: number;
-  name: string;
-};
+import { safeParse } from 'valibot';
+import { CharacterApiResponse, CharacterApiResponseSchema } from './character.contract';
 
 @Component({
   selector: 'app-character-list',
@@ -39,13 +26,27 @@ export type Character = {
 export class CharacterList {
   name = signal('');
 
-  charactersResource = httpResource<ApiResponse>(() => {
-    return {
-      method: 'GET',
-      url: 'https://rickandmortyapi.com/api/character',
-      params: {
-        name: this.name(),
+  charactersResource = httpResource(
+    () => {
+      return {
+        method: 'GET',
+        url: 'https://rickandmortyapi.com/api/character',
+        params: {
+          name: this.name(),
+        },
+      };
+    },
+    {
+      parse: (response) => {
+        const result = safeParse(CharacterApiResponseSchema, response);
+
+        if (result.success) {
+          return result.output;
+        } else {
+          console.log('Validation errors:', result.issues);
+          return response as CharacterApiResponse;
+        }
       },
-    };
-  });
+    },
+  );
 }
