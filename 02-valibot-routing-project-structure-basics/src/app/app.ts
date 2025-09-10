@@ -1,19 +1,13 @@
 import { Component } from '@angular/core';
-import { CharacterList } from './character-list/character-list';
-import { LocationList } from './location-list/location-list';
-import { EpisodeList } from './episode-list/episode-list';
-import { SignalsExample } from './signals-example';
+import { CharacterList } from './rick-and-morty/character-list/character-list';
+import { LocationList } from './rick-and-morty/location-list/location-list';
+import { EpisodeList } from './rick-and-morty/episode-list/episode-list';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [CharacterList, LocationList, EpisodeList],
-  template: `
-    <!-- <app-signals-example /> -->
-
-    <app-character-list />
-    <app-location-list />
-    <app-episode-list />
-  `,
+  imports: [RouterOutlet],
+  template: ` <router-outlet /> `,
   styles: [],
 })
 export class App {}
