@@ -23,7 +23,7 @@ export type Character = {
     <ul>
       @if (charactersResource.hasValue() && charactersResource.value(); as response) {
         @for (character of response.results; track character.id) {
-          <li>{{ character.name }} {{ $even }} {{ $odd }}</li>
+          <li>{{ character.name }}</li>
         } @empty {
           <p>This list is empty</p>
         }

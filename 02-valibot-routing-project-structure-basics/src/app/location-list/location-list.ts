@@ -23,7 +23,7 @@ export type Location = {
     <ul>
       @if (locationsResource.hasValue() && locationsResource.value(); as response) {
         @for (location of response.results; track location.id) {
-          <li>{{ location.name }} {{ $even }} {{ $odd }}</li>
+          <li>{{ location.name }}</li>
         } @empty {
           <p>This list is empty</p>
         }

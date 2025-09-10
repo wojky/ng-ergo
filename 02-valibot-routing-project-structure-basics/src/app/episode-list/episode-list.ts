@@ -23,7 +23,7 @@ export type Episode = {
     <ul>
       @if (episodesResource.hasValue() && episodesResource.value(); as response) {
         @for (episode of response.results; track episode.id) {
-          <li>{{ episode.name }} {{ $even }} {{ $odd }}</li>
+          <li>{{ episode.name }}</li>
         } @empty {
           <p>This list is empty</p>
         }
