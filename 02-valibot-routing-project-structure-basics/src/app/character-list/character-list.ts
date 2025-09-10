@@ -2,7 +2,12 @@ import { httpResource } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 
 export type ApiResponse = {
-  info: any;
+  info: {
+    count: number;
+    next: string | null;
+    pages: number;
+    prev: string | null;
+  };
   results: Character[];
 };
 
@@ -32,11 +37,11 @@ export type Character = {
   styles: ``,
 })
 export class CharacterList {
-  name = signal('rick');
+  name = signal('');
 
   charactersResource = httpResource<ApiResponse>(() => {
     return {
-      method: 'POST',
+      method: 'GET',
       url: 'https://rickandmortyapi.com/api/character',
       params: {
         name: this.name(),
