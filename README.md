@@ -11,9 +11,9 @@
 | ---------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- | ------------ |
 | 03/09 (śr) | [Wprowadzenie do kursu](#wprowadzenie-do-kursu)                                                                           | 0-angular-first-project                     | ✅           |
 | 05/09 (pt) | [Signals API](#signals-api)                                                                                               | 01-signals-api                              | ✅           |
-| 10/09 (śr) | [Podstawy: routing, struktura projektu, valibot](#podstawy-routingu-oraz-struktury-projektu-i-walidacja-danych-z-valibot) | 02-valibot-routing-project-structure-basics | ❌           |
-| 12/09 (pt) |                                                                                                                           |                                             | ❌           |
-| 17/09 (śr) |                                                                                                                           |                                             | ❌           |
+| 10/09 (śr) | [Podstawy: routing, struktura projektu, valibot](#podstawy-routingu-oraz-struktury-projektu-i-walidacja-danych-z-valibot) | 02-valibot-routing-project-structure-basics | ✅           |
+| 12/09 (pt) | [Komunikacja między komponentami](#komunikacja-między-komponentami)                                                       | 03-components-data-flow-and-communications  | ❌           |
+| 15/09 (pn) |                                                                                                                           |                                             | ❌           |
 | 19/09 (pt) |                                                                                                                           |                                             | ❌           |
 | 24/09 (śr) |                                                                                                                           |                                             | ❌           |
 | 26/09 (pt) |                                                                                                                           |                                             | ❌           |
@@ -44,6 +44,13 @@
 - lazy loading (routes/component)
 - walidacja danych wejściowych przez valibot
 - strukturyzowanie projektu
+
+### Komunikacja między komponentami
+
+- komunikacja parent -> child
+- komunikacja child -> parent
+- komunikacja sibling <-> sibling
+- nowe API: `input()` `output()` `model()` `(<event>)` `[(<two-way>)]` `inject()`
 
 ---
 
