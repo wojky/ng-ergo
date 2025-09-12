@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { CharacterApiResponseSchema } from './character.contract';
 import { validate } from '../../shared/validate';
 import { CharacterItem, CharacterItemChildMessagePayload } from './character-item/character-item';
@@ -8,11 +8,16 @@ import { CharacterItem, CharacterItemChildMessagePayload } from './character-ite
   selector: 'app-character-list',
   imports: [CharacterItem],
   template: `
+    {{ parentModel() }}
     <ul>
       @if (charactersResource.hasValue() && charactersResource.value(); as response) {
         @for (character of response.results; track character.id) {
           <li>
-            <app-character-item (childMessage)="onChildMessage($event)" [item]="character" />
+            <app-character-item
+              (childMessage)="onChildMessage($event)"
+              [(modelExample)]="parentModel"
+              [item]="character"
+            />
           </li>
         } @empty {
           <p>This list is empty</p>
@@ -29,13 +34,19 @@ import { CharacterItem, CharacterItemChildMessagePayload } from './character-ite
 export class CharacterList {
   name = signal('');
 
+  parentModel = signal('from parent');
+
+  e = effect(() => {
+    console.log('Parent model changed:', this.parentModel());
+  });
+
   readonly url = 'https://rickandmortyapi.com/api/character';
 
   onChildMessage(payload: CharacterItemChildMessagePayload) {
     console.log('Message from child:', payload);
   }
 
-  charactersResource = httpResource(
+  protected charactersResource = httpResource(
     () => {
       return {
         method: 'GET',
