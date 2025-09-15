@@ -1,8 +1,8 @@
-# components-data-flow-and-communications03-
+# 04-dependency-injection-basics
 
-1. Uporządkowali kod w episodes i locations np. użycie valibota
-2. Stworzyli komponenty dla episode-item i location-item
-3. W characters-list dodać komponent ktory bedzie mial w sobie input (html) i przycisk submit, ktory wyemituje wartosc input na zewnątrz
-4. podlaczyc stworzony komponent w innych listach
-5. dodaj kolejna kontrolke ze innymi filtrami jak status
-6. dodac zapisywanie ratingu w serwisie \*\*\*
+1. Dodaj do aplikacji rick-and-morty przycisk zaloguj, który będzie widoczny tylko wtedy kiedy użytkownik nie jest zalogowany
+2. Po kliknięciu w przycisk przejdź na route `/auth` gdzie użytkownik będzie widział dwa inputy (nazwa użytkownika / hasło)
+3. Po wpisaniu dowolnej wartości możesz się "zalogować" czyli zostać przekierowany na dowolną listę z aplikacji rick-and-morty
+4. Po zalogowaniu użytkownik powinien widzieć informację "Zalogowano!" oraz przycisk wyloguj, który wyczyści stan zalogowania po kliknięciu, ale użytkownik zostanie na tej samej liście (nie musisz przekierowywać)
+
+Zwróć uwagę gdzie trzymać stan zalogowania, jakie metody powinny być udostępnione na zewnątrz, oraz gdzie dodać przycisk zalogowania/wylogowywania
