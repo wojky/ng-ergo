@@ -1,14 +1,16 @@
-import { httpResource } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
-import { CharacterApiResponseSchema } from './character.contract';
-import { validate } from '../../shared/validate';
+import { Component, inject, signal } from '@angular/core';
 import { CharacterItem, CharacterItemChildMessagePayload } from './character-item/character-item';
 import { Filters, FiltersState } from '../../shared/ui/filters';
+import { ExampleService } from '../service-example';
+import { CharactersApiService } from './characters.api.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-character-list',
   imports: [CharacterItem, Filters],
+  providers: [ExampleService],
   template: `
+    <button (click)="goToCharacterForm()">Create new character</button>
     <app-filters (newSearch)="search($event)" />
     <div style="display: flex; gap: 16px; flex-wrap: wrap">
       @if (charactersResource.hasValue() && charactersResource.value(); as response) {
@@ -31,32 +33,29 @@ import { Filters, FiltersState } from '../../shared/ui/filters';
   styles: ``,
 })
 export class CharacterList {
-  name = signal('');
+  service = inject(CharactersApiService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   parentModel = signal('from parent');
 
   search(filters: FiltersState) {
-    this.name.set(filters.name);
+    this.service.updateFilters(filters.name);
   }
-
-  readonly url = 'https://rickandmortyapi.com/api/character';
 
   onChildMessage(payload: CharacterItemChildMessagePayload) {
     console.log('Message from child:', payload);
   }
 
-  protected charactersResource = httpResource(
-    () => {
-      return {
-        method: 'GET',
-        url: this.url,
-        params: {
-          name: this.name(),
-        },
-      };
-    },
-    {
-      parse: validate(CharacterApiResponseSchema, this.url),
-    },
-  );
+  protected charactersResource = this.service.charactersResource;
+
+  constructor() {
+    if (this.charactersResource.status() === 'resolved') {
+      this.service.refresh();
+    }
+  }
+
+  goToCharacterForm() {
+    this.router.navigate(['create'], { relativeTo: this.route });
+  }
 }

@@ -1,9 +1,10 @@
 import { httpResource } from '@angular/common/http';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { EpisodeItemComponent } from './episode-item';
 import { validate } from '../../shared/validate';
 import { EpisodeApiResponseSchema } from './episode.contract';
 import { Filters, FiltersState } from '../../shared/ui/filters';
+import { ExampleService } from '../service-example';
 
 @Component({
   selector: 'app-episode-list',
@@ -30,6 +31,8 @@ import { Filters, FiltersState } from '../../shared/ui/filters';
 })
 export class EpisodeList {
   name = signal('');
+
+  service = inject(ExampleService);
 
   search(filters: FiltersState) {
     this.name.set(filters.name);
