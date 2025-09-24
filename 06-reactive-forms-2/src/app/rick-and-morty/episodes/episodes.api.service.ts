@@ -38,23 +38,24 @@ export class EpisodesApiService {
 
   createEpisode(payload: CreateEpisodeFormValue) {
     this.#episodesResource.update((v) => {
-      return v
-        ? {
-            ...v,
-            results: [
-              ...v.results,
-              {
-                id: v.info.count + 1,
-                characters: [],
-                created: new Date().toISOString(),
-                episode: payload.episode,
-                name: payload.name,
-                air_date: payload.air_date,
-                url: `${this.url}/${v.info.count + 1}`,
-              },
-            ],
-          }
-        : v;
+      if (!v) {
+        return v;
+      }
+
+      const newEpisode = {
+        id: v.info.count + 1,
+        characters: [],
+        created: new Date().toISOString(),
+        episode: payload.episode,
+        name: payload.name,
+        air_date: payload.air_date,
+        url: `${this.url}/${v.info.count + 1}`,
+      };
+
+      return {
+        info: v.info,
+        results: [...v.results, newEpisode],
+      };
     });
   }
 

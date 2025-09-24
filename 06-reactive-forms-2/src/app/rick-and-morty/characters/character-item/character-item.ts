@@ -27,10 +27,6 @@ export class CharacterItem {
 
   rating = signal(0);
 
-  e = effect(() => {
-    console.log('Child model changed:', this.rating());
-  });
-
   childMessage = output<CharacterItemChildMessagePayload>();
 
   parentComponent = inject(CharacterList, { optional: true });

@@ -1,11 +1,26 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Pipe, PipeTransform } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EpisodeFormService } from './create-episode.form.service';
 import { EpisodesApiService } from '../episodes.api.service';
 
+export function customDate(date: string): string {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(date).toLocaleDateString('en-US', options);
+}
+
+@Pipe({
+  name: 'customDate',
+})
+export class CustomDatePipe implements PipeTransform {
+  transform(date: string) {
+    return customDate(date);
+  }
+}
+
 @Component({
   selector: 'app-create-episode-container',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CustomDatePipe, UpperCasePipe],
   providers: [EpisodeFormService],
   template: `
     <section>
@@ -19,7 +34,9 @@ import { EpisodesApiService } from '../episodes.api.service';
           <label>
             Air date
             <input type="date" [max]="service.todayDate" formControlName="air_date" />
-            <span>{{ formatDate(service.createCharacterForm.value.air_date!) }}</span>
+            <span>{{
+              service.createCharacterForm.getRawValue().air_date | customDate | uppercase
+            }}</span>
           </label>
           <div>
             <label>
@@ -56,8 +73,7 @@ export class CreateEpisodeContainer {
   }
 
   formatDate(date: string): string {
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(date).toLocaleDateString('en-US', options);
+    return customDate(date);
   }
 
   submit() {
