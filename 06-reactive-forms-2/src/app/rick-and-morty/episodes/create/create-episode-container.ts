@@ -1,8 +1,11 @@
-import { Component, inject, Pipe, PipeTransform } from '@angular/core';
+import { Component, inject, Pipe, PipeTransform, signal } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EpisodeFormService } from './create-episode.form.service';
 import { EpisodesApiService } from '../episodes.api.service';
+import { validate } from '../../../shared/validate';
+import { Character, CharacterApiResponseSchema } from '../../characters/character.contract';
+import { httpResource } from '@angular/common/http';
 
 export function customDate(date: string): string {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -54,6 +57,40 @@ export class CustomDatePipe implements PipeTransform {
               )
             }}</span>
           </div>
+          <div style="display: flex; gap: 2rem;">
+            <div>
+              <label
+                >Character:
+
+                <input #characterInput />
+                <button (click)="searchCharacter(characterInput.value)">Search</button>
+              </label>
+              @if (characterResource.hasValue() && characterResource.value(); as characterData) {
+                <ul>
+                  @for (character of characterData.results.slice(0, 5); track character.id) {
+                    <li>
+                      {{ character.name }}
+                      <button (click)="selectCharacter(character)">Select</button>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+            <div>
+              <p>Selected characters:</p>
+              <ul>
+                @for (
+                  character of service.createCharacterForm.value.characters;
+                  track character.id
+                ) {
+                  <li>
+                    {{ character.name }}
+                    <button (click)="removeCharacter($index)">Remove</button>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
         </div>
       </form>
     </section>
@@ -76,19 +113,52 @@ export class CreateEpisodeContainer {
     return customDate(date);
   }
 
+  searchTerm = signal('');
+
+  searchCharacter(searchTerm: string) {
+    this.searchTerm.set(searchTerm);
+  }
+
+  characterResource = httpResource(
+    () => {
+      return {
+        method: 'GET',
+        url: `https://rickandmortyapi.com/api/character`,
+        params: {
+          name: this.searchTerm(),
+        },
+      };
+    },
+    {
+      parse: validate(CharacterApiResponseSchema, `https://rickandmortyapi.com/api/character`),
+    },
+  );
+
+  selectCharacter(character: Character) {
+    this.service.createCharacterForm.controls.characters.push(
+      new FormControl(character, { nonNullable: true }),
+    );
+  }
+
+  removeCharacter(index: number) {
+    this.service.createCharacterForm.controls.characters.removeAt(index);
+  }
+
   submit() {
     if (this.service.createCharacterForm.valid) {
-      const { name, air_date, season, episode } = this.service.createCharacterForm.getRawValue();
+      const { name, air_date, season, episode, characters } =
+        this.service.createCharacterForm.getRawValue();
       this.api.createEpisode({
         name: name,
         air_date: this.formatDate(air_date),
         episode: this.formatEpisodeCode(season, episode),
+        characters: characters.map((character) => character.url),
       });
 
       console.log('Form value:', this.service.createCharacterForm.value);
 
-      // alert('Episode created!');
-      // this.service.createCharacterForm.reset();
+      alert('Episode created!');
+      this.service.createCharacterForm.reset();
     }
   }
 }

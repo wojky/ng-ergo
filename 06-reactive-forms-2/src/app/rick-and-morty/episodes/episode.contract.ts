@@ -1,4 +1,4 @@
-import { array, InferOutput, nullable, number, object, string } from 'valibot';
+import { array, InferOutput, number, object, string } from 'valibot';
 import { ApiListInfoSchema } from '../../shared/contracts/list-api-response';
 
 export const EpisodeSchema = object({
@@ -20,6 +20,7 @@ export const CreateEpisodeFormValueSchema = object({
   name: string(),
   air_date: string(), // format YYYY-MM-DD
   episode: string(), // format SxxExx
+  characters: array(string()),
 });
 
 export type EpisodeApiResponse = InferOutput<typeof EpisodeApiResponseSchema>;

@@ -37,6 +37,7 @@ export class EpisodesApiService {
   });
 
   createEpisode(payload: CreateEpisodeFormValue) {
+    console.log(payload);
     this.#episodesResource.update((v) => {
       if (!v) {
         return v;

@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Character } from '../../characters/character.contract';
 
 @Injectable()
 export class EpisodeFormService {
@@ -13,5 +14,6 @@ export class EpisodeFormService {
     air_date: this.formBuilder.control(this.todayDate, [Validators.required]),
     season: this.formBuilder.control(1, [Validators.required]),
     episode: this.formBuilder.control(1, [Validators.required]),
+    characters: this.formBuilder.array<Character>([]),
   });
 }
