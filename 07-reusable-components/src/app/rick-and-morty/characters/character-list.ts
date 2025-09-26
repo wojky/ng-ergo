@@ -15,11 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     <div style="display: flex; gap: 16px; flex-wrap: wrap">
       @if (charactersResource.hasValue() && charactersResource.value(); as response) {
         @for (character of response.results; track character.id) {
-          <app-character-item
-            (childMessage)="onChildMessage($event)"
-            [(modelExample)]="parentModel"
-            [item]="character"
-          />
+          <app-character-item [item]="character" />
         } @empty {
           <p>This list is empty</p>
         }

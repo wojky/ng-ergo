@@ -1,17 +1,37 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { EpisodeItemComponent } from './episode-item';
 import { Filters, FiltersState } from '../../shared/ui/filters';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EpisodesApiService } from './episodes.api.service';
+import { ListWrapper } from './list-wrapper';
+
+@Component({
+  selector: 'test',
+  template: ` {{ item() }} `,
+})
+export class Another {
+  item = input.required<any>();
+}
 
 @Component({
   selector: 'app-episode-list',
-  imports: [EpisodeItemComponent, Filters],
+  imports: [EpisodeItemComponent, Filters, ListWrapper],
   template: `
     <button (click)="goToEpisodeForm()">Create new episode</button>
     <app-filters (newSearch)="name.set($event.name)" />
     <ul>
-      @if (episodesResource.hasValue() && episodesResource.value(); as response) {
+      <app-list-wrapper [resource]="episodesResource" [itemComponent]="EpisodeItemComponent">
+        <div errorContent>
+          Custom error!
+          <button (click)="refresh()">Retry</button>
+        </div>
+
+        <div loadingContent>
+          <h1>Loading!!!</h1>
+          <h2>Please wait...</h2>
+        </div>
+      </app-list-wrapper>
+      <!-- @if (episodesResource.hasValue() && episodesResource.value(); as response) {
         @for (episode of response.results; track episode.id) {
           <li>
             <app-episode-item [item]="episode" />
@@ -23,7 +43,7 @@ import { EpisodesApiService } from './episodes.api.service';
         <p>Loading...</p>
       } @else if (episodesResource.error(); as error) {
         <p>Error!</p>
-      }
+      } -->
     </ul>
   `,
   styles: ``,
@@ -32,6 +52,9 @@ export class EpisodeList {
   router = inject(Router);
   route = inject(ActivatedRoute);
   name = signal('');
+
+  EpisodeItemComponent = EpisodeItemComponent;
+  Another = Another;
 
   service = inject(EpisodesApiService);
 
@@ -43,5 +66,9 @@ export class EpisodeList {
 
   goToEpisodeForm() {
     this.router.navigate(['create'], { relativeTo: this.route });
+  }
+
+  refresh() {
+    this.service.refresh();
   }
 }

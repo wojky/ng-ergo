@@ -15,8 +15,8 @@
 | 12/09 (pt) | [Komunikacja między komponentami](#komunikacja-między-komponentami)                                                       | 03-components-data-flow-and-communications  | ✅           |
 | 15/09 (pn) | [Dependency injection - podstawy](#dependency-injection---podstawy)                                                       | 04-dependency-injection-basics              | ✅           |
 | 19/09 (pt) | [Reactive forms](#reactive-forms)                                                                                         | 05-reactive-forms                           | ✅           |
-| 24/09 (śr) | Reactive forms 2                                                                                                          | 06-reactive-forms                           | ❌           |
-| 26/09 (pt) |                                                                                                                           |                                             | ❌           |
+| 24/09 (śr) | Reactive forms 2                                                                                                          | 06-reactive-forms                           | ✅           |
+| 26/09 (pt) | Reużywalne komponenty                                                                                                     | 07-reusable-components                      | ❌           |
 | 01/10 (śr) |                                                                                                                           |                                             | ❌           |
 | 03/10 (pt) |                                                                                                                           |                                             | ❌           |
 | 08/10 (śr) |                                                                                                                           |                                             | ❌           |
