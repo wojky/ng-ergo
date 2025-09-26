@@ -21,6 +21,11 @@ export class Another {
     <app-filters (newSearch)="name.set($event.name)" />
     <ul>
       <app-list-wrapper [resource]="episodesResource" [itemComponent]="EpisodeItemComponent">
+        <ng-template #itemTemplate let-item="item">
+          <p>random element</p>
+          <app-episode-item [item]="item" />
+        </ng-template>
+
         <div errorContent>
           Custom error!
           <button (click)="refresh()">Retry</button>
