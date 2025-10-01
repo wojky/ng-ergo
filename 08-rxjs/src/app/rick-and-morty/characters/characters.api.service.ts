@@ -23,7 +23,7 @@ export class CharactersApiService {
         method: 'GET',
         url: this.#url,
         params: {
-          name: name,
+          name,
           page: page,
         },
       };
