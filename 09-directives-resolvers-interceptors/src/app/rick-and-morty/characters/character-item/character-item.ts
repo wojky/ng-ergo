@@ -1,4 +1,15 @@
-import { Component, effect, inject, input, model, output, signal } from '@angular/core';
+import {
+  Component,
+  Directive,
+  effect,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  model,
+  output,
+  signal,
+} from '@angular/core';
 import { Character } from '../character.contract';
 import { CharacterList } from '../character-list';
 import { Rating } from '../../../shared/ui/rating';
@@ -7,12 +18,25 @@ export type CharacterItemChildMessagePayload = {
   characterId: number;
 };
 
+@Directive({
+  selector: '[appCopyToClipboard]',
+})
+export class CopyToClipboardDirective {
+  private element = inject(ElementRef);
+
+  @HostListener('click', ['$event'])
+  copyToClipboard(event: MouseEvent) {
+    navigator.clipboard.writeText(this.element.nativeElement.textContent || '');
+    alert('Skopiowano do schowka!');
+  }
+}
+
 @Component({
   selector: 'app-character-item',
-  imports: [Rating],
+  imports: [Rating, CopyToClipboardDirective],
   template: `
     <div style="display: flex; align-items: center; gap: 8px;">
-      <p>{{ item().name }}</p>
+      <p appCopyToClipboard>{{ item().name }}</p>
     </div>
     <app-rating [(rating)]="rating" />
     <figure style="max-width: 150px;">

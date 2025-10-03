@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -41,4 +41,9 @@ import { AuthService } from '../auth/auth.service';
 })
 export class RickAndMortyShell {
   authService = inject(AuthService);
+  private router = inject(Router);
+
+  ngOnInit() {
+    // this.router.events.subscribe(console.log);
+  }
 }

@@ -1,12 +1,14 @@
 import { Component, input } from '@angular/core';
 import { Episode } from './episode.contract';
+import { CopyToClipboardDirective } from '../characters/character-item/character-item';
 
 @Component({
   selector: 'app-episode-item',
+  imports: [CopyToClipboardDirective],
   template: `
     <div class="episode-item">
       <h3>{{ item().name }}</h3>
-      <p>{{ item().episode }}</p>
+      <p appCopyToClipboard>{{ item().episode }}</p>
       <p>{{ item().air_date }}</p>
     </div>
   `,
