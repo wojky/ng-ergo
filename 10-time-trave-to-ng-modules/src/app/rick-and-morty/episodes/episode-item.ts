@@ -4,7 +4,7 @@ import { CopyToClipboardDirective } from '../../shared/utils/directives/copy-to-
 
 @Component({
   selector: 'app-episode-item',
-  imports: [CopyToClipboardDirective],
+  standalone: false,
   template: `
     <div class="episode-item">
       <h3>{{ item().name }}</h3>
