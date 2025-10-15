@@ -1,4 +1,3 @@
-
 // Include theming for Angular Material with `mat.theme()`.
 // This Sass mixin will define CSS variables that are used for styling Angular Material
 // components according to the Material 3 design spec.
@@ -7,14 +6,18 @@
 @use '@angular/material' as mat;
 
 html {
-  @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  --primary-color: peru;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
 body {
@@ -63,5 +66,31 @@ ul {
   padding: 0;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+// overrides for Angular Material components
+
+html {
+  @include mat.snack-bar-overrides(
+    (
+      button-color: white,
+      container-color: var(--primary-color),
+    )
+  );
+
+  @include mat.checkbox-overrides(
+    (
+      // selected-checkmark-color: var(--primary-color),
+      selected-icon-color: var(--primary-color),
+      selected-hover-icon-color: var(--primary-color),
+      selected-focus-icon-color: var(--primary-color)
+    )
+  );
+}

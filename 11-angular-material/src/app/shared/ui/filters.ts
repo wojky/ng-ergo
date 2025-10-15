@@ -10,6 +10,7 @@ export type FiltersState = {
     <div style="display: flex; gap: 8px; align-items: center;">
       <div>
         <input (input)="name.set($event.target.value)" placeholder="Search by name" />
+        <ng-content />
       </div>
       <button (click)="search()">Search</button>
     </div>

@@ -6,14 +6,29 @@ import { CharactersApiService } from './characters.api.service';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ListWrapper } from '../../shared/ui/list-wrapper';
 import { Pagination } from '../../shared/ui/pagination';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-character-list',
-  imports: [CharacterItem, Filters, ListWrapper, Pagination, RouterOutlet],
+  imports: [
+    CharacterItem,
+    Filters,
+    ListWrapper,
+    Pagination,
+    RouterOutlet,
+    MatCheckboxModule,
+    ReactiveFormsModule,
+  ],
   providers: [ExampleService],
   template: `
     <button (click)="goToCharacterForm()">Create new character</button>
-    <app-filters (newSearch)="search($event)" />
+    <app-filters (newSearch)="search($event)">
+      <mat-checkbox [formControl]="ctrl">Toggle me</mat-checkbox>
+
+      <input type="checkbox" [formControl]="ctrl" />Toggle me
+    </app-filters>
     @if (charactersResource.hasValue() && charactersResource.value(); as data) {
       <app-pagination
         [currentPage]="service.filters().page"
@@ -35,6 +50,10 @@ import { Pagination } from '../../shared/ui/pagination';
   styles: ``,
 })
 export class CharacterList {
+  private snackBar = inject(MatSnackBar);
+
+  ctrl = new FormControl(false);
+
   service = inject(CharactersApiService);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -42,6 +61,22 @@ export class CharacterList {
   value = input.required<string>();
 
   parentModel = signal('from parent');
+
+  ngOnInit() {
+    const snack = this.snackBar.open('Toast opened!', 'Close', {
+      duration: 0,
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+
+    snack.afterOpened().subscribe(() => {
+      console.log('Toast is opened');
+    });
+
+    snack.afterDismissed().subscribe(() => {
+      console.log('Toast is dismissed');
+    });
+  }
 
   search(filters: FiltersState) {
     this.service.updateFilters({ name: filters.name });
