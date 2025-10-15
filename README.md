@@ -16,11 +16,11 @@
 | 15/09 (pn) | [Dependency injection - podstawy](#dependency-injection---podstawy)                                                       | 04-dependency-injection-basics              | ✅           |
 | 19/09 (pt) | [Reactive forms](#reactive-forms)                                                                                         | 05-reactive-forms                           | ✅           |
 | 24/09 (śr) | Reactive forms 2                                                                                                          | 06-reactive-forms                           | ✅           |
-| 26/09 (pt) | Reużywalne komponenty                                                                                                     | 07-content-projection                       | ❌           |
-| 01/10 (śr) |                                                                                                                           |                                             | ❌           |
-| 03/10 (pt) |                                                                                                                           |                                             | ❌           |
-| 08/10 (śr) |                                                                                                                           |                                             | ❌           |
-| 10/10 (pt) |                                                                                                                           |                                             | ❌           |
+| 26/09 (pt) | Content Projection                                                                                                        | 07-content-projection                       | ✅           |
+| 01/10 (śr) | Wstęp do RxJS                                                                                                             | 08-rxjs                                     | ✅           |
+| 03/10 (pt) | Dyrektrywy, Resolvery, Interceptory                                                                                       | 09-directives-resolvers-interceptors        | ✅           |
+| 06/10 (śr) | Projekt ze starym API Angulara                                                                                            | 10-time-travel-to-ng-modules                | ✅           |
+| 15/10 (śr) | Angular Material - biblioteki UI                                                                                          | 11-angular-material                         | ❌           |
 | 15/10 (śr) |                                                                                                                           |                                             | ❌           |
 | 17/10 (pt) |                                                                                                                           |                                             | ❌           |
 | 22/10 (śr) |                                                                                                                           |                                             | ❌           |

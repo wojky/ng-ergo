@@ -1,20 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { EpisodeItemComponent } from './episode-item';
-import { FiltersState } from '../../shared/ui/filters';
+import { Filters, FiltersState } from '../../shared/ui/filters';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EpisodesApiService } from './episodes.api.service';
+import { ListWrapper } from '../../shared/ui/list-wrapper';
 
 @Component({
   selector: 'app-episode-list',
-  standalone: false,
+  imports: [Filters, ListWrapper],
   template: `
     <button (click)="goToEpisodeForm()">Create new episode</button>
     <app-filters (newSearch)="service.updateFilters($event.name)" />
     <ul>
-      <app-list-wrapper [resource]="episodesResource">
-        <ng-template #itemTemplate let-item="item">
-          <app-episode-item [item]="item" />
-        </ng-template>
+      <app-list-wrapper [resource]="episodesResource" [itemComponent]="EpisodeItemComponent">
         <div errorContent>
           Custom error!
           <button (click)="refresh()">Retry</button>
@@ -33,10 +31,6 @@ export class EpisodeList {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
-  startGame() {
-    this.router.navigate(['start'], { relativeTo: this.route });
-  }
-
   EpisodeItemComponent = EpisodeItemComponent;
 
   service = inject(EpisodesApiService);
@@ -49,8 +43,6 @@ export class EpisodeList {
 
   goToEpisodeForm() {
     this.router.navigate(['create'], { relativeTo: this.route });
-
-    this.router.navigateByUrl('/start');
   }
 
   refresh() {
