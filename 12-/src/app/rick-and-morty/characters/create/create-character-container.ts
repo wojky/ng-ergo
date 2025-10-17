@@ -1,6 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { CreateCharacterFormService } from './create-character.form.service';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AsyncValidatorFn,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { catchError, map, of, switchMap, take, timer } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { CharacterApiResponse } from '../character.contract';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export enum CreateCharacterSteps {
   BasicInfo = 1,
@@ -8,9 +17,41 @@ export enum CreateCharacterSteps {
   Episodes,
 }
 
+const nameExistenceAsyncValidator: (http: HttpClient) => AsyncValidatorFn = (http) => {
+  return (control) => {
+    console.log('Checking name existence for', control.value);
+
+    const value = control.value ?? '';
+    const params = new HttpParams().set('name', value.trim().toLowerCase());
+
+    return timer(300).pipe(
+      switchMap(() => {
+        return http
+          .get<CharacterApiResponse>(`https://rickandmortyapi.com/api/character/`, { params })
+          .pipe(
+            take(1),
+            map((response) => {
+              const nameExists = response.results.some(
+                (c) => c.name.toLowerCase() === value.trim().toLowerCase(),
+              );
+
+              return nameExists ? { nameExists: true } : null;
+            }),
+            catchError((errResponse: HttpErrorResponse) => {
+              return errResponse.status === 404 &&
+                errResponse.error.error === 'There is nothing here'
+                ? of(null)
+                : of({ apiError: true });
+            }),
+          );
+      }),
+    );
+  };
+};
+
 @Component({
   selector: 'app-create-character-container',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatProgressSpinnerModule],
   providers: [CreateCharacterFormService],
   template: `
     <progress [value]="currentStep()" [max]="CreateCharacterSteps.Episodes"></progress>
@@ -26,8 +67,17 @@ export enum CreateCharacterSteps {
 
             <div>
               <label>Name: <input formControlName="name" /></label>
-              @if (nameCtrl.touched && nameCtrl.errors) {
-                <p style="color: red">Name is required. Min. {{ nameMinLength }} characters</p>
+              @if (nameCtrl.pending) {
+                <mat-spinner />
+                <p>Checking name...</p>
+              }
+              @if (nameCtrl.touched && nameCtrl.errors; as errors) {
+                @if (errors['nameExists']) {
+                  <p style="color: red">Name already exists</p>
+                }
+                @if (errors['required'] || errors['minlength']) {
+                  <p style="color: red">Name is required. Min. {{ nameMinLength }} characters</p>
+                }
               }
             </div>
 
@@ -79,10 +129,13 @@ export class CreateCharacterContainer {
   nameMinLength = 2;
 
   createCharacterForm = this.formBuilder.group({
-    name: this.formBuilder.control({ value: '', disabled: false }, [
-      Validators.required,
-      Validators.minLength(this.nameMinLength),
-    ]),
+    name: this.formBuilder.control(
+      { value: '', disabled: false },
+      {
+        validators: [Validators.required, Validators.minLength(this.nameMinLength)],
+        asyncValidators: [nameExistenceAsyncValidator(inject(HttpClient))],
+      },
+    ),
     status: this.formBuilder.control<'Alive' | 'Dead' | 'Unknown'>(
       {
         value: 'Alive',
@@ -97,7 +150,7 @@ export class CreateCharacterContainer {
     console.log(this.createCharacterForm);
 
     this.createCharacterForm.controls.name.valueChanges.subscribe((value) => {
-      console.log(value);
+      // console.log(value);
 
       if (value.length === 0) {
         this.createCharacterForm.controls.species.disable();

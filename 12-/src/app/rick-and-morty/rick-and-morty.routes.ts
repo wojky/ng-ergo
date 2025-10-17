@@ -32,6 +32,10 @@ const roleGuard: CanActivateFn = (route) => {
 
 export const routes: Routes = [
   {
+    path: 'characters/create',
+    component: CreateCharacterContainer,
+  },
+  {
     path: 'characters',
     component: CharacterList,
     children: [
@@ -55,10 +59,6 @@ export const routes: Routes = [
         return Promise.resolve('from promise');
       },
     },
-  },
-  {
-    path: 'characters/create',
-    component: CreateCharacterContainer,
   },
   {
     path: 'episodes',
