@@ -1,12 +1,18 @@
-# 11-angular-material
+# 12-
 
-Podmień następujące elementy na komponenty na materialowe:
+1. ekran konfiguracji rozgrywki
 
-- inputy
-- przyciski
-- gwiazdki w rating na ikony materialowe
-- kalendarz
-- paginacje
-- komponenty lokacji i epizodów
+- ilość par / kart np. 8 / 12 / 18
+- czas narastający / zmniejszający się / wolna rozgrywka
+- liczenie punktów
+- wpisanie imienia
 
-Spróbuj zmodyfikować kolory wykorzystanych komponentów za pomocą design tokenów
+2. ekran gry
+
+- wyświetlenie stanu gry
+- przycisk rozpoczęcia od nowa
+- przycisk zakończenia gry
+
+3. ekran listy top graczy
+
+uwaga: zapisywanie stanu gry i listy top graczy może lecieć do przeglądarkowego localStorage!
