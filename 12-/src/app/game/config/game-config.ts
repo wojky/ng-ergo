@@ -9,6 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
   template: `
     <a routerLink="../..">Back</a>
 
+    <form>
+      <!-- Game configuration options would go here -->
+    </form>
+
     <button matButton (click)="startGame()">Start game</button>
   `,
   styles: ``,

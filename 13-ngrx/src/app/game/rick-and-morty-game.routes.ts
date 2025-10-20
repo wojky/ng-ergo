@@ -36,6 +36,32 @@ export const routes: Routes = [
           {
             path: 'board',
             component: GameBoard,
+            resolve: {
+              characters: () => {
+                const config = inject(GameConfigService).config();
+
+                let characterCount: number;
+
+                switch (config.difficulty) {
+                  case 'easy':
+                    characterCount = 8;
+                    break;
+                  case 'normal':
+                    characterCount = 12;
+                    break;
+                  case 'hard':
+                    characterCount = 18;
+                    break;
+                }
+
+                return Array.from({ length: characterCount }, (_, i) => {
+                  return {
+                    id: i + 1,
+                    img: `https://rickandmortyapi.com/api/character/avatar/${i + 1}.jpeg`,
+                  };
+                });
+              },
+            },
             canActivate: [canActivateGameBoard],
           },
           {
