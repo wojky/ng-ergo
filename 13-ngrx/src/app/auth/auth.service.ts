@@ -21,7 +21,7 @@ export class AuthService {
     this.#authState.set({ isAuthenticated: true });
     this.store.dispatch(AuthActions.login({ username, password }));
 
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
   }
 
   logout(): void {

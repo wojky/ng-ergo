@@ -4,7 +4,7 @@ import { AuthActions } from './auth.actions';
 
 export const authReducer = createReducer(
   defaultAuthState,
-  on(AuthActions.login, (state, action) => {
+  on(AuthActions.loginSuccess, (state, action) => {
     return {
       ...state,
       isAuthenticated: true,

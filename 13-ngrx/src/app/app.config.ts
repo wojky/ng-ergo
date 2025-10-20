@@ -19,6 +19,7 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { authReducer } from './auth/state/auth.reducer';
 import { appReducers } from './core/app.reducers';
+import { AuthEffects } from './auth/state/auth.effects';
 
 @Injectable()
 export class AppTitleStrategy extends TitleStrategy {
@@ -39,6 +40,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([logInterceptor, tokenInterceptor])),
     provideStore(appReducers),
-    provideEffects(),
+    provideEffects(AuthEffects),
   ],
 };
