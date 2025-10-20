@@ -15,6 +15,10 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { logInterceptor, tokenInterceptor } from './core/interceptors';
 import { Title } from '@angular/platform-browser';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { authReducer } from './auth/state/auth.reducer';
+import { appReducers } from './core/app.reducers';
 
 @Injectable()
 export class AppTitleStrategy extends TitleStrategy {
@@ -22,7 +26,7 @@ export class AppTitleStrategy extends TitleStrategy {
 
   override updateTitle(snapshot: RouterStateSnapshot): void {
     const title = this.buildTitle(snapshot);
-    console.log(snapshot);
+    // console.log(snapshot);
     this.title.setTitle(title ? `${title} | Rick and Morty Wiki` : 'Default');
   }
 }
@@ -34,5 +38,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([logInterceptor, tokenInterceptor])),
+    provideStore(appReducers),
+    provideEffects(),
   ],
 };

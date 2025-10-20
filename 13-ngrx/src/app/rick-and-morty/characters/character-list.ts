@@ -10,6 +10,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
+import { Store } from '@ngrx/store';
+import { selectIsAuthenticated } from '../../auth/state/auth.selectors';
+import { AppState } from '../../core/app.reducers';
 
 @Component({
   selector: 'app-character-list',
@@ -24,7 +27,7 @@ import { AuthService } from '../../auth/auth.service';
   ],
   providers: [ExampleService],
   template: `
-    @if (auth.authState().isAuthenticated) {
+    @if (isAuthenticated()) {
       <button (click)="goToCharacterForm()">Create new character</button>
     }
     <app-filters (newSearch)="search($event)"> </app-filters>
@@ -50,6 +53,8 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class CharacterList {
   auth = inject(AuthService);
+  store = inject<Store<AppState>>(Store);
+  isAuthenticated = this.store.selectSignal(selectIsAuthenticated);
   private snackBar = inject(MatSnackBar);
 
   ctrl = new FormControl(false);
@@ -90,7 +95,7 @@ export class CharacterList {
 
   constructor() {
     effect(() => {
-      console.log('Value', this.value());
+      // console.log('Value', this.value());
     });
 
     if (this.charactersResource.status() === 'resolved') {

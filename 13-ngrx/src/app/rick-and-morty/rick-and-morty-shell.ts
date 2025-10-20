@@ -1,6 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, effect, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../core/app.reducers';
+import { selectIsAuthenticated } from '../auth/state/auth.selectors';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-rick-and-morty-shell',
@@ -43,8 +47,23 @@ import { AuthService } from '../auth/auth.service';
 export class RickAndMortyShell {
   authService = inject(AuthService);
   private router = inject(Router);
+  private store = inject<Store<AppState>>(Store);
+
+  destroy$ = inject(DestroyRef);
+
+  isAuthenticated = this.store.selectSignal(selectIsAuthenticated);
+
+  e = effect(() => {
+    console.log('Auth changed:', this.isAuthenticated());
+  });
 
   ngOnInit() {
     // this.router.events.subscribe(console.log);
+    // this.store
+    //   .select(selectIsAuthenticated)
+    //   .pipe(takeUntilDestroyed(this.destroy$))
+    //   .subscribe((isAuth) => {
+    //     console.log('Auth state changed', isAuth);
+    //   });
   }
 }
