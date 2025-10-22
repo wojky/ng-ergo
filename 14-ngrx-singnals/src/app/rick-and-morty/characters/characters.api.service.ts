@@ -2,6 +2,7 @@ import { httpResource } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { validate } from '../../shared/validate';
 import { CharacterApiResponseSchema } from './character.contract';
+import { patchState, signalState } from '@ngrx/signals';
 
 export type CharactersFilters = {
   name: string;
@@ -14,6 +15,15 @@ export type CharactersFilters = {
 export class CharactersApiService {
   #url = 'https://rickandmortyapi.com/api/character';
   #filters = signal<CharactersFilters>({ name: '', page: 1 });
+
+  #filtersv2 = signalState<CharactersFilters>({
+    name: '',
+    page: 1,
+  });
+
+  constructor() {
+    this.#filtersv2.name();
+  }
 
   #charactersResource = httpResource(
     () => {
@@ -37,6 +47,10 @@ export class CharactersApiService {
   filters = this.#filters.asReadonly();
 
   updateFilters(filters: Partial<CharactersFilters>) {
+    patchState(this.#filtersv2, {
+      page: 3,
+    });
+
     this.#filters.update((current) => {
       return { ...current, ...filters };
     });
