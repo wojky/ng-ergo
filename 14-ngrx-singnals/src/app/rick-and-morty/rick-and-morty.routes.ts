@@ -7,7 +7,7 @@ import { CreateEpisodeContainer } from './episodes/create/create-episode-contain
 import { CreateLocationContainer } from './locations/create/create-location-container';
 import { delay, of, take } from 'rxjs';
 import { CharacterDetails } from './characters/character-details';
-import { NgrxSignalsShell } from './ngrx-signals/rick-and-morty-shell';
+import { NgrxSignalsShell } from './ngrx-signals/ngrx-signals-shell';
 
 const canDeactivateCreateEpisodeForm: CanDeactivateFn<CreateEpisodeContainer> = (component) => {
   console.log('canDeactivateCreateEpisodeForm', component);
